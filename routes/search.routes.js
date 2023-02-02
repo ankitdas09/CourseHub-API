@@ -1,6 +1,7 @@
 import { Router } from "express";
 import catchAsync from "../utils/catchAsync.js";
 import SearchResult from "../models/search.model.js";
+import isAuthenticated from "../middleware/isAuthenticated.js";
 const router = Router();
 
 // router.post(
@@ -23,6 +24,7 @@ const router = Router();
 
 router.post(
     "/",
+    isAuthenticated,
     catchAsync(async (req, res, next) => {
         let { words } = req.body;
 
@@ -37,6 +39,7 @@ router.post(
 
 router.post(
     "/feed",
+    isAuthenticated,
     catchAsync(async (req, res, next) => {
         const { name, code } = req.body;
         const savedDocument = await SearchResult.create({

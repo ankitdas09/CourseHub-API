@@ -121,15 +121,15 @@ router.get(
 );
 
 router.get(
-    "/file/:id",
+    "/:id",
     catchAsync(async (req, res, next) => {
         const resp = await getFileDownloadLink(req.params.id);
-        res.json(resp);
+        res.json({ url: resp });
     })
 );
 
 router.get(
-    "/weburl/:fileID",
+    "/preview/:fileID",
     catchAsync(async (req, res, next) => {
         const { fileID } = req.params;
         const resp = await getFileWebUrl(fileID);
