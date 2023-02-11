@@ -94,65 +94,65 @@ const getDepartment = async (access_token) => {
 export const redirectHandler = async (req, res, next) => {
     const { code } = req.query;
 
-    // var data = qs.stringify({
-    //     client_secret: clientSecret,
-    //     client_id: clientid,
-    //     redirect_uri: redirect_uri,
-    //     scope: "user.read",
-    //     grant_type: "authorization_code",
-    //     code: code,
-    // });
+    var data = qs.stringify({
+        client_secret: clientSecret,
+        client_id: clientid,
+        redirect_uri: redirect_uri,
+        scope: "user.read",
+        grant_type: "authorization_code",
+        code: code,
+    });
 
-    // var config = {
-    //     method: "post",
-    //     url: `https://login.microsoftonline.com/850aa78d-94e1-4bc6-9cf3-8c11b530701c/oauth2/v2.0/token`,
-    //     headers: {
-    //         "Content-Type": "application/x-www-form-urlencoded",
-    //         client_secret: clientSecret,
-    //     },
-    //     data: data,
-    // };
-    // const response = await axios.post(config.url, config.data, {
-    //     headers: config.headers,
-    // });
+    var config = {
+        method: "post",
+        url: `https://login.microsoftonline.com/850aa78d-94e1-4bc6-9cf3-8c11b530701c/oauth2/v2.0/token`,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            client_secret: clientSecret,
+        },
+        data: data,
+    };
+    const response = await axios.post(config.url, config.data, {
+        headers: config.headers,
+    });
 
-    // if (!response.data) throw new AppError(500, "Something went wrong");
+    if (!response.data) throw new AppError(500, "Something went wrong");
 
-    // const AccessToken = response.data.access_token;
-    // const RefreshToken = response.data.refresh_token;
+    const AccessToken = response.data.access_token;
+    const RefreshToken = response.data.refresh_token;
 
-    // const userFromToken = await getUserFromToken(AccessToken);
+    const userFromToken = await getUserFromToken(AccessToken);
 
-    // if (!userFromToken || !userFromToken.data) throw new AppError(401, "Access Denied");
+    if (!userFromToken || !userFromToken.data) throw new AppError(401, "Access Denied");
 
-    // const roll = userFromToken.data.surname;
-    // if (!roll) throw new AppError(401, "Sign in using Institute Account");
+    const roll = userFromToken.data.surname;
+    if (!roll) throw new AppError(401, "Sign in using Institute Account");
 
-    // let existingUser = await findUserWithEmail(userFromToken.data.mail); //find with email
+    let existingUser = await findUserWithEmail(userFromToken.data.mail); //find with email
 
-    // if (!existingUser) {
-    //     const courses = await fetchCourses(userFromToken.data.surname);
-    //     const department = await getDepartment(AccessToken);
+    if (!existingUser) {
+        const courses = await fetchCourses(userFromToken.data.surname);
+        const department = await getDepartment(AccessToken);
 
-    //     const userData = {
-    //         name: userFromToken.data.displayName,
-    //         degree: userFromToken.data.jobTitle,
-    //         rollNumber: userFromToken.data.surname,
-    //         email: userFromToken.data.mail,
-    //         // branch: department, //calculate branch
-    //         semester: 2, //calculate sem
-    //         courses: courses,
-    //         department: department,
-    //     };
+        const userData = {
+            name: userFromToken.data.displayName,
+            degree: userFromToken.data.jobTitle,
+            rollNumber: userFromToken.data.surname,
+            email: userFromToken.data.mail,
+            // branch: department, //calculate branch
+            semester: 2, //calculate sem
+            courses: courses,
+            department: department,
+        };
 
-    //     const { error } = validateUser(userData);
-    //     if (error) throw new AppError(500, error.message);
+        const { error } = validateUser(userData);
+        if (error) throw new AppError(500, error.message);
 
-    //     const user = new User(userData);
-    //     existingUser = await user.save();
-    // }
+        const user = new User(userData);
+        existingUser = await user.save();
+    }
 
-    // const token = existingUser.generateJWT();
+    const token = existingUser.generateJWT();
 
     // res.cookie("token", token, {
     //     maxAge: 3600000,
@@ -161,7 +161,7 @@ export const redirectHandler = async (req, res, next) => {
     //     httpOnly: true,
     // });
 
-    return res.redirect(`foobar://success?access=1234`);
+    return res.redirect(`foobar://success?code=${code}`);
 };
 export const mobileCodeHandler = async (req, res, next) => {
     const { code } = req.body;
