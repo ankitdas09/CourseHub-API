@@ -169,7 +169,7 @@ export const redirectHandler = async (req, res, next) => {
     // const encryptedCode = EncryptText(code);
     const encryptedToken = EncryptText(token);
 
-    return res.redirect(`foobar://success?token=${encryptedToken}`);
+    return res.redirect(`foobar://success?token=${encryptedToken}?tokenendshere=99`);
 };
 export const mobileCodeHandler = async (req, res, next) => {
     const { code } = req.body;
