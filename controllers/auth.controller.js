@@ -105,7 +105,7 @@ export const redirectHandler = async (req, res, next) => {
 
     var config = {
         method: "post",
-        url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+        url: `https://login.microsoftonline.com/850aa78d-94e1-4bc6-9cf3-8c11b530701c/oauth2/v2.0/token`,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             client_secret: clientSecret,
