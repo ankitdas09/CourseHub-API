@@ -16,6 +16,9 @@ import User from "../models/user.model.js";
 
 import academic from "../config/academic.js";
 
+import aesjs from "aes-js";
+import EncryptText from "../utils/encryptAES.js";
+
 //not used
 export const loginHandler = (req, res) => {
     // https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=c6c864ac-cced-4be6-8657-ca15170e7b51&response_type=code&redirect_uri=http://localhost:8080/login/redirect/&scope=offline_access%20user.read&state=12345&prompt=consent
@@ -161,7 +164,12 @@ export const redirectHandler = async (req, res, next) => {
     //     httpOnly: true,
     // });
 
-    return res.redirect(`foobar://success?code=${code}`);
+    // var key = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+
+    const encryptedCode = EncryptText(code);
+    const encryptedToken = EncryptText(token);
+
+    return res.redirect(`foobar://success?code=${encryptedCode}?token=${encryptedToken}`);
 };
 export const mobileCodeHandler = async (req, res, next) => {
     const { code } = req.body;

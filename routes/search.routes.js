@@ -24,7 +24,7 @@ const router = Router();
 
 router.post(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     catchAsync(async (req, res, next) => {
         let { words } = req.body;
 
@@ -39,7 +39,7 @@ router.post(
 
 router.post(
     "/feed",
-    isAuthenticated,
+    // isAuthenticated,
     catchAsync(async (req, res, next) => {
         const { name, code } = req.body;
         const savedDocument = await SearchResult.create({
@@ -47,6 +47,15 @@ router.post(
             code: code.toLowerCase(),
         });
         res.json(savedDocument);
+    })
+);
+
+router.get(
+    "/available",
+    // isAuthenticated,
+    catchAsync(async (req, res, next) => {
+        const availableCourses = await SearchResult.find({ isAvailable: true });
+        return res.json(availableCourses);
     })
 );
 
