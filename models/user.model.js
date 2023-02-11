@@ -17,7 +17,7 @@ const userSchema = Schema({
     favourites: [
         {
             name: { type: String },
-            id: { type: String, unique: true },
+            id: { type: String },
             path: { type: String },
             code: { type: String },
         },
