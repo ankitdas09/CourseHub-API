@@ -8,7 +8,7 @@ import appConfig from "../config/default.js";
 
 const clientid = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_VALUE;
-const redirect_uri = "http://localhost:8080/login/redirect/";
+const redirect_uri = "https://coursehub-api.onrender.com/api/auth/login/redirect";
 
 import { findUserWithEmail, getUserFromToken, validateUser } from "../models/user.model.js";
 
@@ -154,14 +154,14 @@ export const redirectHandler = async (req, res, next) => {
 
     const token = existingUser.generateJWT();
 
-    res.cookie("token", token, {
-        maxAge: 3600000,
-        sameSite: "lax",
-        secure: false,
-        httpOnly: true,
-    });
+    // res.cookie("token", token, {
+    //     maxAge: 3600000,
+    //     sameSite: "lax",
+    //     secure: false,
+    //     httpOnly: true,
+    // });
 
-    return res.redirect(appConfig.clientURL);
+    return res.redirect(`foobar://success?access=${token}`);
 };
 export const mobileCodeHandler = async (req, res, next) => {
     const { code } = req.body;
